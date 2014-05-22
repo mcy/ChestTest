@@ -17,6 +17,7 @@ import com.octagami.mayhemlib.chest.UIClickListener;
 import com.octagami.mayhemlib.chest.UICloseListener;
 import com.octagami.mayhemlib.chest.UIInventory;
 import com.octagami.mayhemlib.chest.UIInventory.UIBuilder;
+import com.octagami.mayhemlib.chest.UIOpenListener;
 import com.octagami.mayhemlib.item.ItemBuilder;
 
 
@@ -24,6 +25,16 @@ public class Main extends JavaPlugin{
 
 	private UIBuilder ui = 
 			new UIBuilder("Welcome to the UI test!", 9)
+				.openWith(				
+					new UIOpenListener() {
+
+						@Override
+						public void onOpen(UIInventory ui) {
+
+							ui.getPlayer().sendMessage("I'm an open message!");
+						}
+					}
+				)
 				.with(
 					new ItemBuilder(GOLD_PICKAXE)
 						.named(BLUE + "DIGGING!")
