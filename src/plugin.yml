@@ -1,0 +1,9 @@
+name: ChestTest
+main: com.xorinc.chesttest.Main
+version: 1.0.0
+author: drXor
+commands:
+  chesttest:
+    description: foo
+    aliases: []
+    usage: /<command>
