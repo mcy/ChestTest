@@ -4,10 +4,12 @@ import static org.bukkit.Material.*;
 import static org.bukkit.ChatColor.*;
 import static org.bukkit.enchantments.Enchantment.*;
 
+import java.util.Random;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Wither;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -68,25 +70,41 @@ public class Main extends JavaPlugin{
 					}
 				)
 				.with(
-					new ItemBuilder(NETHER_STAR)
-						.named(RED + "FIGHT THA WITHER")
-						.lore(GRAY + "Make sure you're ready!")
+					new ItemBuilder(RAW_FISH, 1, (short) 2)
+						.named(GOLD + "KITTEH")
+						.lore(GRAY + "Get a free kitty!")
 					.build(),
-					
-					8,
 					
 					new UIClickListener() {
 
+						Random r = new Random();
+						Ocelot.Type[] breeds = {Ocelot.Type.BLACK_CAT, Ocelot.Type.RED_CAT, Ocelot.Type.SIAMESE_CAT};
+						
 						@Override
 						public ItemStack onClick(UIInventory ui, ItemStack item, int slot) {
 
 							Player p = ui.getPlayer();
 							
-							p.getWorld().spawn(p.getLocation().add(0, 10, 0), Wither.class);
+							Ocelot o = p.getWorld().spawn(p.getLocation().add(0, 10, 0), Ocelot.class);
+							
+							o.setTamed(true);
+							o.setOwner(p);
+							o.setCatType(breeds[r.nextInt(3)]);
+							o.setBaby();
+							o.setAgeLock(true);
 							
 							return item;
 						}
 					}
+				)
+				.with(
+					new ItemBuilder(NETHER_STAR)
+						.named(RED + "FIGHT THA WITHER")
+						.lore(GRAY + "" + STRIKETHROUGH + "Make sure you're ready!")
+						.lore(GRAY + "**disabled**")
+					.build(),
+					
+					8
 				)
 				.closeWith(
 						
