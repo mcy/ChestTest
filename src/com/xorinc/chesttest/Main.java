@@ -5,6 +5,7 @@ import static org.bukkit.ChatColor.*;
 import static org.bukkit.enchantments.Enchantment.*;
 
 import java.util.Random;
+import java.util.UUID;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.google.common.base.Supplier;
 import com.octagami.mayhemlib.chest.UIClickListener;
 import com.octagami.mayhemlib.chest.UICloseListener;
 import com.octagami.mayhemlib.chest.UIInventory;
@@ -80,6 +82,57 @@ public class Main extends JavaPlugin{
 						}
 					}
 				)
+				.with(
+					new ItemBuilder(REDSTONE)
+						.named(DARK_GRAY + "Random UUID")
+						.lore(GRAY + "Get a UUID unique to this UI instance!")
+					.build(),
+					
+					new Supplier<UIClickListener>() {
+						
+						@Override
+						public UIClickListener get() {
+							
+							return new UIClickListener() {
+
+								String rand = UUID.randomUUID().toString().replace("-", "");
+								
+								@Override
+								public ItemStack onClick(UIInventory ui, ItemStack item, int slot) {
+
+									ui.getPlayer().sendMessage(GOLD + "This UUID is unique to this UI! " + rand);
+									return item;
+								}
+							};
+						}
+					}
+				)
+				.with(
+					new ItemBuilder(EMERALD)
+						.named(GREEN + "Multiplying Emeralds")
+						.lore(GRAY + "MONEH")
+					.build(),
+					
+					new Supplier<UIClickListener>() {
+						
+						@Override
+						public UIClickListener get() {
+							
+							return new UIClickListener() {
+
+								int total = 1;
+								
+								@Override
+								public ItemStack onClick(UIInventory ui, ItemStack item, int slot) {
+
+									ui.getPlayer().getWorld().dropItemNaturally(ui.getPlayer().getLocation(), new ItemStack(EMERALD, total));
+									total *= 2;
+									return item;
+								}
+							};
+						}
+					}
+				)				
 				.with(
 					new ItemBuilder(RAW_FISH, 1, (short) 2)
 						.named(GOLD + "KITTEH")
